@@ -40,6 +40,9 @@ Options
     Will print the latest commit sha for VS Code (server and CLI are current
     synced and always the same).
 
+-- dump-tar
+    Download the vscode server tar and exit
+
 --cli
     Switches the binary download VS Code CLI.
 
@@ -165,6 +168,9 @@ while [ ${#} -gt 0 ]; do
             echo "${usage}"
             exit 0
             ;;
+        --dump-tar)
+            DUMP_TAR=1
+            ;;
         --version)
             if [ -n "$1" ] && [ "$1" = "${1#-}" ]; then
                 BUILD="stable"
@@ -281,6 +287,13 @@ archive="vscode-${options}.tar.gz"
 if [ -z "${tarball}" ]; then
     echo "attempting to download and pre-install VS Code ${BIN_TYPE} version '${commit_sha}'"
     url="https://update.code.visualstudio.com/commit:${commit_sha}/${options}/${BUILD}"
+    if [ "${DUMP_TAR}" = "1" ]; then
+        printf "%s" "downloading ${url} to ${archive} "
+        curl -s --fail -L "${url}" -o "./${archive}"
+        echo "tarball downloaded to ${archive}"
+        exit 0
+    fi
+
     printf "%s" "downloading ${url} to ${archive} "
     curl -s --fail -L "${url}" -o "/tmp/${archive}"
     echo "done"

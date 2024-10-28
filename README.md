@@ -56,6 +56,9 @@ synced and always the same)
 `--cli`
 Switches the binary download VS Code CLI.
 
+`--dump-tar`
+    Download the vscode server tar and exit
+
 `--version`
     The version of vscode server to match againt. Incompatible with --commit.
 
